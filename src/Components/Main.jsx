@@ -12,6 +12,8 @@ function Main() {
   const [uploadStatus, setUploadStatus] = useState('');
   const [count, setCount] = useState(null);
   const defaultFileName = 'Data_1.xlsx';
+  const [capacity, setCapacity] = useState(null);
+ 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile && selectedFile.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
@@ -28,20 +30,67 @@ function Main() {
       alert('Please select a file.');
       return;
     }
-
+  
     const formData = new FormData();
-    formData.append('uploadFile', file, defaultFileName); // Set the file name as 'Data_1.xlsx'
-
+    formData.append('uploadFile', file, defaultFileName);
+  
     try {
       const response = await axios.post('http://localhost:5000/uploadConfigExcel', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-
+  
       if (response.data.status === 1) {
         setUploadStatus('File uploaded successfully');
-        // Handle further logic if needed upon successful upload
+  
+        const reader = new FileReader();
+        reader.onload = async (event) => {
+          try {
+            const arrayBuffer = event.target.result;
+            const data = new Uint8Array(arrayBuffer);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const sheetName = workbook.SheetNames[0];
+            const sheet = workbook.Sheets[sheetName];
+            let count = 0;
+            for (let cell in sheet) {
+              if (cell[0] === 'A' && !isNaN(cell.slice(1))) {
+                count++;
+              }
+            }
+            setCount(count);
+  
+            // const arrayBuffer2 = event.target.result; // Use the previous arrayBuffer from FileReader
+            // const data2 = new Uint8Array(arrayBuffer2);
+            // const workbook2 = XLSX.read(data2, { type: 'array' });
+            const sheetName2 = workbook.SheetNames[0];
+            const sheet2 = workbook.Sheets[sheetName2];
+            let sum = 0;
+            let isHeaderRow = true;
+            for (let cell in sheet2) {
+              if (!isHeaderRow) {
+                if (cell[0] === 'B') {
+                  const cellValue = sheet2[cell].v;
+  
+                  if (!isNaN(cellValue)) {
+                    const numericValue = parseFloat(cellValue);
+                    sum += numericValue;
+                  } else {
+                    console.log(
+                      `Non-numeric value in cell of ${cell} Warehouse : "${cellValue}"`
+                    );
+                  }
+                }
+              }
+              isHeaderRow = false;
+            }
+            const capacityInMq = (sum / 1000).toFixed(2);
+            setCapacity(capacityInMq);
+          } catch (error) {
+            console.error('Error reading Excel:', error);
+          }
+        };
+        reader.readAsArrayBuffer(file);
       } else {
         setUploadStatus(response.data.message || 'Error uploading file');
       }
@@ -49,38 +98,28 @@ function Main() {
       console.error('Error uploading file:', error);
       setUploadStatus('Error uploading file');
     }
+  };
+  console.log(capacity);
+  console.log(count);
+  
+  useEffect(() => {
 
-    // Place the file reading code inside the handleUpload function
-    const reader = new FileReader();
+    const initialWarehouseData = fetchWarehouseData(); 
+    setCount(initialWarehouseData);
+  }, []);
 
-    reader.onload = async (event) => {
-      try {
-        const arrayBuffer = event.target.result;
-        const data = new Uint8Array(arrayBuffer);
-        const workbook = XLSX.read(data, { type: 'array' });
-        const sheetName = workbook.SheetNames[1];
-        const sheet = workbook.Sheets[sheetName];
-        let count = 0;
-        for (let cell in sheet) {
-          if (cell[0] === 'A' && !isNaN(cell.slice(1))) {
-            count++;
-          }
-        }
-        setCount(count);
-      } catch (error) {
-        console.error('Error reading Excel:', error);
-       
-      }
-    };
-
-    reader.readAsArrayBuffer(file);
+  const fetchWarehouseData = () => {
+    return 10; 
   };
 
-  useEffect(() => {
-    if (count !== null) {
-    
-    }
-  }, [count]);
+// useEffect(()=>{
+//   const initialWarehouseCapacity = fetchWarehouseCapacity(); 
+//   setCapacity(initialWarehouseCapacity)
+// })
+// const  fetchWarehouseCapacity = () =>{
+//   return 10
+// }
+  
 
   return (
     <div>
@@ -114,7 +153,7 @@ function Main() {
       </div>
       <div style={{ display: 'flex', width: '60vw', justifyContent: 'space-between', margin: 20 }}>
         <WarehouseCard />
-        <FpsCard count={count} />
+        <FpsCard count={count} capacity={capacity} />
       </div>
       <Graph />
       <Map />
@@ -124,6 +163,7 @@ function Main() {
 }
 
 export default Main;
+
 
 
 // -----------------------

@@ -9,13 +9,13 @@ import GetAppTwoToneIcon from "@mui/icons-material/GetAppOutlined";
 import FileCopyTwoToneIcon from "@mui/icons-material/FileCopyOutlined";
 import PictureAsPdfTwoToneIcon from "@mui/icons-material/PictureAsPdfOutlined";
 import ArchiveTwoToneIcon from "@mui/icons-material/ArchiveOutlined";
-import { ClassSharp } from "@mui/icons-material";
+// import { ClassSharp } from "@mui/icons-material";
 
-function FpsCard({ uploadStatus, uploadedData, count}) {
+function FpsCard({ uploadStatus, uploadedData, count , capacity}) {
   
   const [anchorEl, setAnchorEl] = useState(null);
   const [warehouse, setWarehouse] = useState("");
-  const [capacity, setCapacity] = useState("");
+  // const [capacity, setCapacity] = useState("");
 
   useEffect(() => {
     const excel = async () => {
@@ -34,7 +34,7 @@ function FpsCard({ uploadStatus, uploadedData, count}) {
       setWarehouse(count);
     };
     excel();
-  }, []);
+  }, );
 
   useEffect(() => {
     const excel = async () => {
@@ -64,10 +64,10 @@ function FpsCard({ uploadStatus, uploadedData, count}) {
         isHeaderRow = false;
       }
       const capacityInMq = (sum / 1000).toFixed(2);
-      setCapacity(capacityInMq);
+      // setCapacity(capacityInMq);
     };
     excel();
-  }, []);
+  },);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
