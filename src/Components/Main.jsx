@@ -107,18 +107,19 @@ function Main() {
     const initialWarehouseData = fetchWarehouseData(); 
     setCount(initialWarehouseData);
   }, []);
+  
 
   const fetchWarehouseData = () => {
-    return 10; 
+    return 280; 
   };
 
-// useEffect(()=>{
-//   const initialWarehouseCapacity = fetchWarehouseCapacity(); 
-//   setCapacity(initialWarehouseCapacity)
-// })
-// const  fetchWarehouseCapacity = () =>{
-//   return 10
-// }
+  useEffect(() => {
+ 
+   
+    const defaultCapacity = 15209.99
+    setCapacity(defaultCapacity);
+  }, []);
+ 
   
 
   return (
