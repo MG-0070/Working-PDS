@@ -64,7 +64,6 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 @app.route("/uploadConfigExcel", methods=["POST"])
 def uploadConfigExcel():
     data = {}
@@ -73,13 +72,15 @@ def uploadConfigExcel():
         if file and allowed_file(file.filename):
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], 'Data_1.xlsx')
             
-            # Check if the folder exists, if not, create it
+            
             os.makedirs(os.path.dirname(file_path), exist_ok=True)
             
             if os.path.exists(file_path):
                 os.remove(file_path)
             file.save(file_path)
             data['status'] = 1
+            df = pd.read_excel('Backend/Data_1.xlsx')  
+            print(df)
         else:
             data['status'] = 0
             data['message'] = 'Invalid file. Only .xlsx or .xls files are allowed.'
