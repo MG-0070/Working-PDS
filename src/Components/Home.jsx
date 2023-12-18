@@ -1,17 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Box, Grid } from "@mui/material";
 import NavBar from "./NavBar";
 import SideBar from "./SideBar";
 import { Outlet } from "react-router-dom";
+import UserContext from "../Context/userContext";
 
 function Home() {
+  const { selectedOption, setSelectedOption } = useContext(UserContext);
+
   const savedUsername = localStorage.getItem("username");
   if (savedUsername === "PunjabUser")
     return (
       <Box>
         <Grid container>
           <Grid item xs={12}>
-            <NavBar />
+          <NavBar selectedOption={selectedOption} />
           </Grid>
           <Grid item xs={1.8} style={{ backgroundColor: "white" }}>
             <SideBar />
@@ -26,9 +29,7 @@ function Home() {
           >
             <Outlet />
           </Grid>
-          <Grid item xs={0.2} style={{ backgroundColor: "white" }}>
-            <div />
-          </Grid>
+          
         </Grid>
       </Box>
     );
@@ -39,3 +40,9 @@ function Home() {
 }
 
 export default Home;
+
+
+
+
+
+
