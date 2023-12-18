@@ -7,15 +7,17 @@ import Main2 from "./Components/Main2";
 import Main from "./Components/Main";
 import Error from "./Components/Error";
 
+
+
 function App() {
   return (
     <div className="App">
       <UserState>
         <Routes>
           <Route exact path="/" element={<Login />} />
-          <Route exact path="/home" element={<Home />}>
+          <Route exact path="/dashboard" element={<Home />}>
             <Route exact path="" element={<Main />} />
-            <Route exact path="main1" element={<Main2 />} />
+            <Route exact path="home" element={<Main2 />} />
           </Route>
           <Route path="/*" element={<Error />} />
         </Routes>
