@@ -1,18 +1,20 @@
 import { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
 import { Avatar, Box, Grid, Menu, MenuItem, Typography } from "@mui/material";
-
+import userContext from "../Context/userContext";
 import EarningIcon from "../Img/warehouse-svgrepo-com.svg";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import GetAppTwoToneIcon from "@mui/icons-material/GetAppOutlined";
 import FileCopyTwoToneIcon from "@mui/icons-material/FileCopyOutlined";
 import PictureAsPdfTwoToneIcon from "@mui/icons-material/PictureAsPdfOutlined";
 import ArchiveTwoToneIcon from "@mui/icons-material/ArchiveOutlined";
+import { useContext } from "react";
 
 const WarehouseCard = ({ isLoading }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [warehouse, setWarehouse] = useState();
   const [capacity, setCapacity] = useState();
+  const { counts } = useContext(userContext);
 
   useEffect(() => {
     const excel = async () => {
@@ -159,7 +161,7 @@ const WarehouseCard = ({ isLoading }) => {
                           width: 150,
                         }}
                       >
-                        WH {warehouse}
+                        FCI {counts.Warehouse_No}
                       </Typography>
                     </Grid>
                     <Grid item sx={{ mb: 1.25, margin: 0 }}>
@@ -187,7 +189,7 @@ const WarehouseCard = ({ isLoading }) => {
                           mb: 0.75,
                         }}
                       >
-                        {capacity} Mq
+                        {counts.Total_Supply} Qt
                       </Typography>
                     </Grid>
                     <Grid item sx={{ mb: 1.25, margin: 0 }}>
