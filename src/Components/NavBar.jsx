@@ -1,3 +1,4 @@
+import React, { useContext } from "react";
 import {
   AppBar,
   Box,
@@ -6,12 +7,24 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import React from "react";
-import styles from "../Css/navbar.module.css";
 import { Menu } from "@mui/icons-material";
-import Logo from "../Img/FCI-Logo.svg";
+import Logo from "../Img/lg.jpg";
+import { makeStyles } from "@mui/styles";
+import UserContext from "../Context/userContext";
 
-function NavBar() {
+const useStyles = makeStyles({
+  logoutButton: {
+    transition: "all 0.3s ease-in-out",
+    "&:hover": {
+      transform: "scale(1.1)",
+    },
+  },
+});
+
+function NavBar({ handleLogout }) {
+  const classes = useStyles();
+  const { selectedOption } = useContext(UserContext);
+
   const logout = () => {
     localStorage.setItem("username", "");
     window.location.href = "/";
@@ -31,27 +44,46 @@ function NavBar() {
               component="div"
               sx={{ ml: 5, mr: 20, mt: 1, color: "black" }}
             >
-              <img src={Logo} alt="logo" style={{ width: 60, height: 60 }} />
+              <img src={Logo} alt="logo" style={{ width: 70, height: 62 }} />
             </Typography>
+            <IconButton
+              size="large"
+              edge="start"
+              color="blue"
+              aria-label="menu"
+            >
+              <Menu />
+            </IconButton>
             <div
               style={{
                 flexGrow: 1,
                 flexDirection: "row",
                 display: "flex",
                 alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              <IconButton
-                size="large"
-                edge="start"
-                color="blue"
-                aria-label="menu"
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{
+                  ml: 2,
+                  color: "blue",
+                  fontWeight: "bold",
+                  display: "flex",
+                  justifyContent: "center",
+                  marginRight: "100px",
+                }}
               >
-                <Menu />
-              </IconButton>
-              <h2 style={{ color: "#5E35B1", marginLeft: 100 }}>PUNJAB</h2>
+                {selectedOption}
+              </Typography>
             </div>
-            <Button color="primary" variant="contained" onClick={logout}>
+            <Button
+              variant="contained"
+              color="error"
+              className={classes.logoutButton}
+              onClick={handleLogout || logout}
+            >
               Logout
             </Button>
           </Toolbar>
