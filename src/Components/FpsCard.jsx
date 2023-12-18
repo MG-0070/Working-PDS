@@ -2,21 +2,21 @@ import React from "react";
 import { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
 import { Avatar, Box, Grid, Menu, MenuItem, Typography } from "@mui/material";
-
+import userContext from "../Context/userContext";
 import warehouseIcon from "../Img/warehouse-svgrepo-com.svg";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import GetAppTwoToneIcon from "@mui/icons-material/GetAppOutlined";
 import FileCopyTwoToneIcon from "@mui/icons-material/FileCopyOutlined";
 import PictureAsPdfTwoToneIcon from "@mui/icons-material/PictureAsPdfOutlined";
 import ArchiveTwoToneIcon from "@mui/icons-material/ArchiveOutlined";
+import { useContext } from "react";
 // import { ClassSharp } from "@mui/icons-material";
 
-function FpsCard({ uploadStatus, uploadedData, count , capacity}) {
-  
+function FpsCard({ uploadStatus, uploadedData, count, capacity }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [warehouse, setWarehouse] = useState("");
-  // const [capacity, setCapacity] = useState("");
-
+  const { counts } = useContext(userContext);
+  console.log({ counts });
   useEffect(() => {
     const excel = async () => {
       const response = await fetch("/data/Template6.xlsx");
@@ -34,7 +34,7 @@ function FpsCard({ uploadStatus, uploadedData, count , capacity}) {
       setWarehouse(count);
     };
     excel();
-  }, );
+  }, []);
 
   useEffect(() => {
     const excel = async () => {
@@ -67,7 +67,7 @@ function FpsCard({ uploadStatus, uploadedData, count , capacity}) {
       // setCapacity(capacityInMq);
     };
     excel();
-  },);
+  }, []);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -79,14 +79,14 @@ function FpsCard({ uploadStatus, uploadedData, count , capacity}) {
 
   return (
     <>
-    <div>
-    {uploadStatus && <p>{uploadStatus}</p>}
-      {uploadedData && (
-        <div>
-        <p>Uploaded Data: {uploadedData}</p>
-        </div>
-      )}
-    </div>
+      <div>
+        {uploadStatus && <p>{uploadStatus}</p>}
+        {uploadedData && (
+          <div>
+            <p>Uploaded Data: {uploadedData}</p>
+          </div>
+        )}
+      </div>
       <div
         style={{
           width: "29vw",
@@ -168,9 +168,11 @@ function FpsCard({ uploadStatus, uploadedData, count , capacity}) {
                           mt: 1.75,
                           mb: 0.75,
                           width: 150,
+                          
                         }}
                       >
-                        WH {count}
+                        FPS {counts.FPS_No}
+
                       </Typography>
                     </Grid>
                     <Grid item sx={{ mb: 1.25, margin: 0 }}>
@@ -179,9 +181,10 @@ function FpsCard({ uploadStatus, uploadedData, count , capacity}) {
                           fontSize: "1rem",
                           fontWeight: 500,
                           color: "#90caf9",
+                          Content: "center"
                         }}
                       >
-                        Total Warehouse
+                          Total FPS Counts
                       </Typography>
                     </Grid>
                   </Grid>
@@ -192,13 +195,13 @@ function FpsCard({ uploadStatus, uploadedData, count , capacity}) {
                       <Typography
                         sx={{
                           fontSize: "2.125rem",
-                          fontWeight: 500,
+                          fontWeight: 400,
                           mr: 1,
                           mt: 1.75,
                           mb: 0.75,
                         }}
                       >
-                        {capacity} Mq
+                        {counts.Total_Demand} Qt
                       </Typography>
                     </Grid>
                     <Grid item sx={{ mb: 1.25, margin: 0 }}>
@@ -209,7 +212,7 @@ function FpsCard({ uploadStatus, uploadedData, count , capacity}) {
                           color: "#90caf9",
                         }}
                       >
-                        Total Capacity
+                        Total FPS Demands
                       </Typography>
                     </Grid>
                   </Grid>
