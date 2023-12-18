@@ -6,7 +6,7 @@
   align-items: center;
   /* background-color: blue; */
   height: 100vh;
-  background-image: url("https://www.iasgyan.in//ig-uploads/images//image01728.jpg");
+  background-image: url("../Img/Public-Distribution-System_cleanup.jpg");
   /* background-image: url(../Img/img6.png); */
   background-repeat: no-repeat;
   background-size: cover;
@@ -39,3 +39,56 @@
   background-color: red;
   color: red;
 }
+
+
+
+/* 
+ */
+ /* .login {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+  animation: changeBackground 10s  infinite;
+}
+
+@keyframes changeBackground {
+  0%, 100% { background-image: url("../Img/Public-Distribution-System_cleanup.jpg"); }
+  33.33% { background-image: url("../Img/img1_punjab.jpeg"); }
+  66.67% { background-image: url("../Img/img2_punjab.jpeg"); }
+}
+
+
+.container {
+  width: 20vw;
+  height: 35vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+
+
+.form {
+  display: grid;
+  width: 15vw;
+  height: 30vh;
+  gap: 20px;
+  flex-direction: row;
+}
+
+.loadcanvas {
+  display: flex !important;
+  flex-direction: row !important;
+  color: red !important;
+}
+
+#canv {
+  background-color: red;
+  color: red;
+} */
